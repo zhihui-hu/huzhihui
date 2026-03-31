@@ -1,6 +1,6 @@
 {
   "name": "official-fe",
-  "version": "26.331.1725",
+  "version": "26.331.1854",
   "private": true,
   "scripts": {
     "dev": "next dev -p 27502",
