@@ -1,0 +1,9 @@
+
+# 项目名称  npx wrangler deploy
+name = "huzhihui-fe"
+
+# 兼容性日期
+compatibility_date = "2025-06-25"
+
+[assets]
+directory = "./out"
