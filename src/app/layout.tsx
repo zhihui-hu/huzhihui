@@ -10,6 +10,7 @@ const font = Geist({
   variable: '--font-geist-sans',
   subsets: ['latin'],
 });
+
 export const metadata: Metadata = {
   title: pkg.seo.title,
   description: pkg.seo.description,
