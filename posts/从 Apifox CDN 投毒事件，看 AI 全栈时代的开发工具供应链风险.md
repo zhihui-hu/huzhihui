@@ -27,7 +27,7 @@ Apifox 在 2026 年 3 月 25 日发布的风险提示里，确认了这些关键
 - SaaS Web 版不受影响，私有化部署版不受影响。
 - 风险时间窗是 2026 年 3 月 4 日到 2026 年 3 月 22 日。
 - 事件原因是桌面客户端动态加载的一个外部 JavaScript 文件遭到恶意篡改，官方定性为供应链攻击。
-- 恶意域名为 `apifox.it.com`，活跃时间为 18 天。
+- 恶意域名为 `apifox[.]it[.]com`，活跃时间为 18 天。
 - 官方已发布 `2.8.19`，并将相关在线动态加载机制改为本地内置打包。
 - 官方建议受影响时间段内使用过相关版本的用户，立即升级并全面轮换敏感凭证。
 
@@ -82,10 +82,10 @@ flowchart TD
     C -->|77KB| E[合法 SDK + 追加约 42KB 混淆恶意代码]
     E --> F[读取 localStorage 中的 common.accessToken<br/>收集机器指纹和系统环境]
     F --> G[调用 api.apifox.com/api/v1/user<br/>获取 Apifox 账户信息]
-    G --> H[请求 apifox.it.com/public/apifox-event.js<br/>附带 af_uuid af_os 等请求头]
+    G --> H[请求 apifox-it-com/public/apifox-event.js<br/>附带 af_uuid af_os 等请求头]
     H --> I[RSA 解密 C2 返回的 Stage-1 Loader]
     I --> J[eval 执行 Stage-1]
-    J --> K[动态插入 script<br/>加载 apifox.it.com/随机8位hex.js]
+    J --> K[动态插入 script<br/>加载 apifox[.]it[.]com/随机8位hex.js]
     K --> L{Electron 渲染环境是否可达 Node 能力}
     L -->|否| M[影响更接近普通 Web 脚本]
     L -->|是| N[Stage-2 Node 脚本执行]
@@ -331,7 +331,7 @@ Apifox 在 `2.8.19` 里的关键动作，是把相关在线动态加载逻辑去
 
 这个修复方向本身已经说明问题根子在哪：
 
-- 根因不只是 `apifox.it.com` 这个恶意域名。
+- 根因不只是 `apifox[.]it[.]com` 这个恶意域名。
 - 根因也不只是攻击者后续下发了什么载荷。
 - 更前面的根因，是桌面端关键执行链依赖了来自 CDN 的远程 JS，而这段远程 JS 又处在一个能够接近本地系统能力的运行上下文里。
 
@@ -364,7 +364,7 @@ Apifox 在 `2.8.19` 里的关键动作，是把相关在线动态加载逻辑去
 如果要做临时阻断，官方建议可以在 `hosts` 中加入：
 
 ```txt
-127.0.0.1 apifox.it.com
+127.0.0.1 apifox[.]it[.]com
 ```
 
 但需要强调的是，这只能阻断后续已知域名访问，不能替代凭证轮换和失陷排查。

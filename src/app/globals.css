@@ -49,15 +49,6 @@
 }
 
 :root {
-  --sh-class: var(--foreground);
-  --sh-identifier: var(--foreground);
-  --sh-sign: var(--muted-foreground);
-  --sh-string: var(--primary);
-  --sh-keyword: var(--foreground);
-  --sh-comment: var(--muted-foreground);
-  --sh-jsxliterals: var(--foreground);
-  --sh-property: var(--foreground);
-  --sh-entity: var(--foreground);
   --background: oklch(1 0 0);
   --foreground: oklch(0.145 0 0);
   --card: oklch(1 0 0);
@@ -147,7 +138,7 @@
 
 @layer components {
   .prose {
-    @apply text-foreground/90;
+    @apply text-foreground/90 text-base leading-7;
   }
 
   .prose .anchor {
@@ -164,7 +155,7 @@
   }
 
   .prose a {
-    @apply decoration-border underline decoration-[0.1em] underline-offset-2 transition-all;
+    @apply text-primary decoration-border underline decoration-[0.08em] underline-offset-2 transition-all;
   }
 
   .prose .anchor::after {
@@ -177,21 +168,48 @@
   }
 
   .prose pre {
-    @apply my-6 overflow-x-auto bg-transparent text-sm;
+    @apply overflow-x-auto bg-transparent text-sm;
   }
 
   .prose code {
-    @apply bg-muted rounded-md px-1.5 py-0.5 font-mono text-[0.92em];
+    @apply bg-muted text-foreground border-border/70 rounded-md border px-1.5 py-0.5 font-mono text-[0.85em];
   }
 
   .prose pre code {
-    @apply block rounded-none bg-transparent px-4 py-4;
+    @apply block rounded-none border-0 bg-transparent px-4 py-4;
     border: initial;
-    line-height: 1.75;
+    line-height: 1;
   }
 
-  .prose code span {
-    @apply font-medium;
+  .prose .github-code-block {
+    @apply border-border bg-card my-6 overflow-hidden rounded-xl border;
+  }
+
+  .prose .github-code-block pre {
+    @apply m-0 rounded-none border-0 bg-transparent p-0;
+  }
+
+  .prose .github-code-block pre code {
+    @apply block min-w-full rounded-none border-0 bg-transparent p-0 text-[0.85rem];
+    line-height: 0.8;
+  }
+
+  .prose .github-code-block .github-code-content {
+    @apply overflow-x-auto;
+  }
+
+  .prose .github-code-block .shiki {
+    @apply m-0 min-w-full border-0 px-4 py-3 text-[0.85rem];
+    line-height: 1;
+  }
+
+  .prose .github-code-block .shiki code {
+    @apply block min-w-full;
+  }
+
+  .prose .github-code-block .line {
+    display: block;
+    min-height: 0;
   }
 
   .prose img {
@@ -235,7 +253,7 @@
   }
 
   .prose blockquote {
-    @apply border-border bg-muted/30 text-foreground/80 my-6 border-l-4 px-4 py-1 italic;
+    @apply border-border text-muted-foreground my-6 border-l-4 pl-4;
   }
 
   .prose hr {

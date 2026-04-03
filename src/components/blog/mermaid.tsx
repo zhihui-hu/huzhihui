@@ -1,5 +1,7 @@
 'use client';
 
+import { CodeCopyButton } from '@/components/blog/code-copy-button';
+import { isSensitiveCodeSample } from '@/components/blog/code-safety';
 import { cn } from '@/lib/utils';
 import { startTransition, useEffect, useId, useState } from 'react';
 
@@ -18,6 +20,7 @@ export function MermaidDiagram({ chart, className }: MermaidDiagramProps) {
   const diagramId = useId().replace(/:/g, '');
   const [svg, setSvg] = useState('');
   const [error, setError] = useState<string | null>(null);
+  const allowCopy = !isSensitiveCodeSample(chart);
 
   useEffect(() => {
     let cancelled = false;
@@ -83,8 +86,11 @@ export function MermaidDiagram({ chart, className }: MermaidDiagramProps) {
         className,
       )}
     >
-      <div className="border-b border-border bg-muted/50 px-4 py-2 font-mono text-[11px] font-medium tracking-[0.24em] text-muted-foreground uppercase">
-        mermaid
+      <div className="flex items-center justify-between border-b border-border bg-muted/40 px-3 py-2">
+        <span className="font-mono text-[11px] font-medium tracking-[0.24em] text-muted-foreground uppercase">
+          mermaid
+        </span>
+        {allowCopy ? <CodeCopyButton value={chart} /> : null}
       </div>
       <div className="overflow-x-auto px-4 py-4">
         {svg ? (

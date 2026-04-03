@@ -1,10 +1,10 @@
+import { CodeBlock } from '@/components/blog/code-block';
 import { MermaidDiagram } from '@/components/blog/mermaid';
 import { cn } from '@/lib/utils';
 import { MDXRemote, type MDXRemoteProps } from 'next-mdx-remote/rsc';
 import Link from 'next/link';
 import React from 'react';
 import remarkGfm from 'remark-gfm';
-import { highlight } from 'sugar-high';
 
 function flattenText(children: React.ReactNode): string {
   return React.Children.toArray(children)
@@ -107,29 +107,20 @@ function CustomLink({
 }
 
 function Code({ className, children, ...props }: React.ComponentProps<'code'>) {
-  const content = flattenText(children).replace(/\n$/, '');
-
-  if (!className) {
-    return (
-      <code
-        className={cn('rounded-md bg-muted px-1.5 py-0.5', className)}
-        {...props}
-      >
-        {children}
-      </code>
-    );
-  }
-
   return (
     <code
-      className={cn('font-mono text-[0.92em]', className)}
-      dangerouslySetInnerHTML={{ __html: highlight(content) }}
+      className={cn(
+        'rounded-md bg-muted px-1.5 py-0.5 font-mono text-[0.92em]',
+        className,
+      )}
       {...props}
-    />
+    >
+      {children}
+    </code>
   );
 }
 
-function Pre({ children, className, ...props }: React.ComponentProps<'pre'>) {
+function Pre({ children, className }: React.ComponentProps<'pre'>) {
   const codeBlock = extractCodeBlock(children);
 
   if (!codeBlock) {
@@ -139,7 +130,6 @@ function Pre({ children, className, ...props }: React.ComponentProps<'pre'>) {
           'my-6 overflow-x-auto rounded-xl border border-border bg-card',
           className,
         )}
-        {...props}
       >
         {children}
       </pre>
@@ -153,25 +143,11 @@ function Pre({ children, className, ...props }: React.ComponentProps<'pre'>) {
   }
 
   return (
-    <div className="my-6 overflow-hidden rounded-xl border border-border bg-card">
-      <div className="flex items-center justify-between border-b border-border bg-muted/50 px-4 py-2">
-        <span className="font-mono text-[11px] font-medium tracking-[0.24em] text-muted-foreground uppercase">
-          {language || 'text'}
-        </span>
-      </div>
-      <pre
-        className={cn(
-          'm-0 overflow-x-auto bg-transparent text-sm text-foreground',
-          className,
-        )}
-        {...props}
-      >
-        <code
-          className="block min-w-full bg-transparent px-4 py-4 font-mono text-[0.92rem] leading-7"
-          dangerouslySetInnerHTML={{ __html: highlight(codeBlock.content) }}
-        />
-      </pre>
-    </div>
+    <CodeBlock
+      className={className}
+      code={codeBlock.content}
+      language={language}
+    />
   );
 }
 
