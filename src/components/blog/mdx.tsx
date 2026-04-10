@@ -43,6 +43,10 @@ function isStaticAssetLink(href: string) {
   );
 }
 
+function shouldOpenInNewTab(href: string) {
+  return href !== '' && !href.startsWith('#');
+}
+
 function extractCodeBlock(children: React.ReactNode) {
   const [child] = React.Children.toArray(children);
 
@@ -94,27 +98,32 @@ function CustomLink({
   className,
   ...props
 }: React.ComponentProps<'a'> & { href?: string }) {
+  const openInNewTab = shouldOpenInNewTab(href);
+  const linkProps = openInNewTab
+    ? { rel: 'noreferrer noopener', target: '_blank' as const }
+    : {};
+
   if (isStaticAssetLink(href)) {
-    return <a className={className} href={href} {...props} />;
+    return <a className={className} href={href} {...linkProps} {...props} />;
   }
 
   if (href.startsWith('/')) {
-    return <Link className={className} href={href} {...props} />;
+    return (
+      <Link
+        className={className}
+        href={href}
+        prefetch={openInNewTab ? false : undefined}
+        {...linkProps}
+        {...props}
+      />
+    );
   }
 
   if (href.startsWith('#')) {
     return <a className={className} href={href} {...props} />;
   }
 
-  return (
-    <a
-      className={className}
-      href={href}
-      rel="noreferrer noopener"
-      target="_blank"
-      {...props}
-    />
-  );
+  return <a className={className} href={href} {...linkProps} {...props} />;
 }
 
 function Code({ className, children, ...props }: React.ComponentProps<'code'>) {
