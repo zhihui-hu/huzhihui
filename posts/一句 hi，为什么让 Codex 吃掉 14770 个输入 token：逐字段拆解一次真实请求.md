@@ -70,8 +70,8 @@ tags:
 
 如果你想对着原始样本一起看，这两份文件就在这里：
 
-- [request.json](/assets/json/codex/request.json)
-- [response.txt](/assets/json/codex/response.txt)
+- [request.json](https://cdn.jsdelivr.net/gh/zhihui-hu/zhihui-hu@main/public/assets/json/codex/request.json)
+- [response.txt](https://cdn.jsdelivr.net/gh/zhihui-hu/zhihui-hu@main/public/assets/json/codex/response.txt)
 
 注意第二个文件故意是 `txt`，不是 `json`。因为它本质上是一条 SSE 事件流，不是一整个干净的 JSON 对象。
 
