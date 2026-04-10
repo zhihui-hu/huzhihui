@@ -12,6 +12,8 @@ export type BlogMetadata = {
   publishedAt: string;
   slug: string;
   image?: string;
+  keywords?: string[];
+  tags?: string[];
 };
 
 export type BlogPost = {
@@ -37,37 +39,61 @@ function extractFrontmatter(fileContent: string) {
     };
   }
 
-  const metadata = match[1]
-    .split('\n')
-    .reduce<Partial<BlogMetadata>>((accumulator, line) => {
-      const trimmedLine = line.trim();
+  const metadata = {} as Partial<BlogMetadata>;
+  let currentListKey: 'keywords' | 'tags' | null = null;
 
-      if (!trimmedLine) {
-        return accumulator;
-      }
+  match[1].split('\n').forEach((line) => {
+    const trimmedLine = line.trim();
 
-      const separatorIndex = trimmedLine.indexOf(':');
+    if (!trimmedLine) {
+      currentListKey = null;
+      return;
+    }
 
-      if (separatorIndex === -1) {
-        return accumulator;
-      }
+    if (currentListKey && trimmedLine.startsWith('- ')) {
+      const value = trimmedLine
+        .slice(2)
+        .trim()
+        .replace(/^['"](.*)['"]$/, '$1');
 
-      const key = trimmedLine.slice(0, separatorIndex).trim();
-      const rawValue = trimmedLine.slice(separatorIndex + 1).trim();
-      const value = rawValue.replace(/^['"](.*)['"]$/, '$1');
+      const list = metadata[currentListKey] || [];
+      metadata[currentListKey] = [...list, value];
+      return;
+    }
 
-      if (
-        key === 'title' ||
-        key === 'summary' ||
-        key === 'publishedAt' ||
-        key === 'slug' ||
-        key === 'image'
-      ) {
-        accumulator[key] = value;
-      }
+    currentListKey = null;
 
-      return accumulator;
-    }, {});
+    const separatorIndex = trimmedLine.indexOf(':');
+
+    if (separatorIndex === -1) {
+      return;
+    }
+
+    const key = trimmedLine.slice(0, separatorIndex).trim();
+    const rawValue = trimmedLine.slice(separatorIndex + 1).trim();
+    const value = rawValue.replace(/^['"](.*)['"]$/, '$1');
+
+    if (
+      key === 'title' ||
+      key === 'summary' ||
+      key === 'publishedAt' ||
+      key === 'slug' ||
+      key === 'image'
+    ) {
+      metadata[key] = value;
+      return;
+    }
+
+    if (key === 'keywords' || key === 'tags') {
+      currentListKey = key;
+      metadata[key] = rawValue
+        ? rawValue
+            .split(',')
+            .map((item) => item.trim().replace(/^['"](.*)['"]$/, '$1'))
+            .filter(Boolean)
+        : [];
+    }
+  });
 
   return {
     frontmatter: metadata,
@@ -134,6 +160,8 @@ function normalizePost(fileName: string) {
       publishedAt: frontmatter.publishedAt || '',
       slug,
       image: frontmatter.image,
+      keywords: frontmatter.keywords,
+      tags: frontmatter.tags,
     },
   } satisfies BlogPost;
 }

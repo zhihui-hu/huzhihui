@@ -39,6 +39,7 @@ export async function generateMetadata(
   return {
     title: post.metadata.title,
     description: post.metadata.summary,
+    keywords: post.metadata.keywords,
     alternates: {
       canonical: canonicalUrl,
     },
@@ -87,6 +88,7 @@ export default async function BlogPostPage(props: PageProps<'/blog/[slug]'>) {
     datePublished: post.metadata.publishedAt || undefined,
     dateModified: post.metadata.publishedAt || undefined,
     image: articleImage,
+    keywords: post.metadata.keywords?.join(', '),
     url: articleUrl,
     author: {
       '@type': 'Person',
@@ -101,20 +103,20 @@ export default async function BlogPostPage(props: PageProps<'/blog/[slug]'>) {
   };
 
   return (
-    <section>
+    <section className="mx-auto w-full  container ">
       <script
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         type="application/ld+json"
       />
-      <h1 className="title text-2xl font-semibold tracking-tighter">
-        {post.metadata.title}
-      </h1>
-      <div className="mt-2 mb-8 flex items-center justify-between text-sm">
-        <p className="text-sm text-muted-foreground">
-          {formatBlogDate(post.metadata.publishedAt)}
-        </p>
-      </div>
-      <article className="prose">
+      <header className="mb-10">
+        <h1 className="title text-[clamp(2rem,5vw,2.9rem)] font-bold leading-tight tracking-[-0.04em] text-foreground">
+          {post.metadata.title}
+        </h1>
+        <div className="mt-3 flex items-center text-sm text-muted-foreground">
+          <p>{formatBlogDate(post.metadata.publishedAt)}</p>
+        </div>
+      </header>
+      <article className="prose prose-github max-w-none">
         <CustomMDX source={post.content} />
       </article>
     </section>

@@ -141,6 +141,222 @@
     @apply text-foreground/90 text-base leading-7;
   }
 
+  .prose.prose-github {
+    @apply text-foreground/85 max-w-none text-base leading-7;
+  }
+
+  .prose.prose-github > :first-child {
+    margin-top: 0 !important;
+  }
+
+  .prose.prose-github .anchor {
+    @apply invisible absolute left-0 -ml-6 pr-2 no-underline;
+    width: auto;
+    max-width: none;
+    cursor: pointer;
+  }
+
+  .prose.prose-github a {
+    @apply text-primary decoration-border/80 font-medium underline decoration-[0.08em] underline-offset-4 transition-colors;
+  }
+
+  .prose.prose-github p {
+    @apply my-4 leading-8;
+  }
+
+  .prose.prose-github h1 {
+    @apply border-border/70 text-foreground mt-12 mb-5 border-b pb-3 text-[2.25rem] leading-tight font-semibold tracking-tight;
+  }
+
+  .prose.prose-github h2 {
+    @apply border-border/70 text-foreground mt-12 mb-4 border-b pb-2 text-[1.7rem] leading-tight font-semibold tracking-tight;
+  }
+
+  .prose.prose-github h3 {
+    @apply text-foreground mt-10 mb-3 text-[1.35rem] leading-8 font-semibold tracking-tight;
+  }
+
+  .prose.prose-github h4 {
+    @apply text-foreground mt-8 mb-3 text-[1.1rem] leading-7 font-semibold;
+  }
+
+  .prose.prose-github strong {
+    @apply text-foreground font-semibold;
+  }
+
+  .prose.prose-github ul {
+    @apply marker:text-muted-foreground my-4 list-disc pl-6;
+  }
+
+  .prose.prose-github ol {
+    @apply marker:text-muted-foreground my-4 list-decimal pl-6;
+  }
+
+  .prose.prose-github li {
+    @apply my-1.5 pl-1 leading-7;
+  }
+
+  .prose.prose-github li > p {
+    @apply my-2;
+  }
+
+  .prose.prose-github blockquote {
+    @apply border-border/80 text-muted-foreground my-6 border-l-4 pl-4;
+  }
+
+  .prose.prose-github img {
+    @apply border-border/70 bg-card my-6 block h-auto w-full rounded-xl border;
+  }
+
+  .prose.prose-github hr {
+    @apply border-border/70 my-10 border-0 border-t;
+  }
+
+  .prose.prose-github code {
+    @apply border-border/70 bg-muted/55 text-foreground rounded-md border px-1.5 py-0.5 font-mono text-[0.875em];
+  }
+
+  .prose.prose-github pre {
+    @apply my-6 overflow-x-auto rounded-none bg-transparent text-sm;
+  }
+
+  .prose.prose-github pre code {
+    @apply block rounded-none border-0 bg-transparent p-0 text-[0.85rem];
+    line-height: inherit;
+  }
+
+  .prose.prose-github .github-code-block {
+    @apply border-border/70 bg-background overflow-hidden rounded-md border;
+  }
+
+  .prose.prose-github .github-code-block .github-code-content {
+    @apply bg-background overflow-x-auto;
+  }
+
+  .prose.prose-github .github-code-block .shiki {
+    @apply m-0 min-w-full border-0 px-4 py-3.5 text-[0.85rem];
+    font-variant-ligatures: none;
+    line-height: 1.45;
+  }
+
+  .prose.prose-github .github-code-block .shiki,
+  .prose.prose-github .github-code-block .shiki span {
+    color: var(--shiki-light) !important;
+    background-color: var(--shiki-light-bg) !important;
+  }
+
+  .dark .prose.prose-github .github-code-block .shiki,
+  .dark .prose.prose-github .github-code-block .shiki span {
+    color: var(--shiki-dark) !important;
+    background-color: var(--shiki-dark-bg) !important;
+  }
+
+  .prose.prose-github .github-code-block .shiki code {
+    @apply block min-w-full;
+  }
+
+  .prose.prose-github .github-code-block .line {
+    display: block;
+    min-height: 1.4em;
+  }
+
+  .prose.prose-github .mermaid-diagram svg {
+    overflow: visible;
+  }
+
+  .prose.prose-github .mermaid-diagram foreignObject {
+    overflow: visible;
+  }
+
+  .prose.prose-github .mermaid-diagram :where(p, ul, ol, li) {
+    margin: 0 !important;
+    padding: 0;
+    line-height: 1.35 !important;
+  }
+
+  .prose.prose-github
+    .mermaid-diagram
+    :where(.nodeLabel, .edgeLabel, .labelBkg) {
+    line-height: 1.35 !important;
+  }
+
+  .prose.prose-github
+    .mermaid-diagram
+    :where(.nodeLabel p, .edgeLabel p, .labelBkg p) {
+    margin: 0 !important;
+    line-height: 1.35 !important;
+  }
+
+  .prose.prose-github
+    .mermaid-diagram
+    :where(.nodeLabel strong, .edgeLabel strong, .labelBkg strong) {
+    font-weight: 600;
+  }
+
+  .prose.prose-github
+    .mermaid-diagram
+    :where(.nodeLabel code, .edgeLabel code, .labelBkg code) {
+    border: 0;
+    background: transparent;
+    padding: 0;
+    font-size: inherit;
+    line-height: inherit;
+  }
+
+  .prose.prose-github
+    .mermaid-diagram
+    :where(.nodeLabel pre, .edgeLabel pre, .labelBkg pre) {
+    margin: 0;
+    background: transparent;
+    padding: 0;
+    overflow: visible;
+  }
+
+  .prose.prose-github img {
+    @apply border-border/70 my-8 block h-auto max-w-full rounded-md border;
+  }
+
+  .prose.prose-github .contains-task-list {
+    @apply list-none pl-0;
+  }
+
+  .prose.prose-github .task-list-item {
+    @apply flex items-start gap-3 pl-0;
+  }
+
+  .prose.prose-github .task-list-item::marker {
+    content: '';
+  }
+
+  .prose.prose-github .task-list-item input[type='checkbox'] {
+    @apply border-border accent-primary mt-1 size-4 rounded border;
+  }
+
+  .prose.prose-github .task-list-item p {
+    @apply my-0;
+  }
+
+  .prose.prose-github table {
+    @apply border-border/70 bg-background w-full border-collapse border text-sm leading-6;
+    display: table;
+  }
+
+  .prose.prose-github thead {
+    @apply bg-muted/40;
+  }
+
+  .prose.prose-github tr {
+    @apply border-border/60 border-b;
+  }
+
+  .prose.prose-github th {
+    @apply border-border/50 text-foreground border-r px-3 py-2 text-left font-semibold last:border-r-0;
+  }
+
+  .prose.prose-github td {
+    @apply border-border/40 border-r px-3 py-2 align-top last:border-r-0;
+  }
+
   .prose .anchor {
     @apply invisible absolute no-underline;
     margin-left: -1em;

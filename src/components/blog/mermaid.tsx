@@ -82,21 +82,21 @@ export function MermaidDiagram({ chart, className }: MermaidDiagramProps) {
   return (
     <div
       className={cn(
-        'my-6 overflow-hidden rounded-xl border border-border bg-card',
+        'mermaid-diagram my-6 overflow-hidden rounded-md border border-border/70 bg-background',
         className,
       )}
     >
-      <div className="flex items-center justify-between border-b border-border bg-muted/40 px-3 py-2">
-        <span className="font-mono text-[11px] font-medium tracking-[0.24em] text-muted-foreground uppercase">
+      <div className="flex items-center justify-between border-b border-border/60 bg-muted/20 px-3 py-1.5">
+        <span className="font-mono text-[10px] font-medium tracking-wide text-muted-foreground/80">
           mermaid
         </span>
         {allowCopy ? <CodeCopyButton value={chart} /> : null}
       </div>
-      <div className="overflow-x-auto px-4 py-4">
+      <div className="overflow-x-auto overflow-y-visible px-4 py-4">
         {svg ? (
           <div
             aria-label="Mermaid diagram"
-            className="[&_svg]:mx-auto [&_svg]:h-auto [&_svg]:max-w-none"
+            className="mermaid-diagram__content [&_svg]:mx-auto [&_svg]:block [&_svg]:h-auto [&_svg]:w-full [&_svg]:min-w-0"
             dangerouslySetInnerHTML={{ __html: svg }}
             role="img"
           />

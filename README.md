@@ -1,36 +1,65 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 胡志辉 / Hu Zhihui
 
-## Getting Started
+写代码，也写一点东西。
 
-First, run the development server:
+从 2016 年 12 月开始做软件开发，先后参与过金融和医疗行业的系统建设与产品交付。现在主要在看 AI 应用、Web 开发、移动端和跨平台这几件事。
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+我对“把功能做出来”当然有兴趣，但更在意另一半：流程顺不顺，数据准不准，权限清不清，系统能不能稳稳落地。
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 常用技术
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+<p>
+  <a href="https://skillicons.dev">
+    <img src="https://skillicons.dev/icons?i=ts,react,nextjs,vue,electron,tailwind&perline=6" alt="TypeScript, React, Next.js, Vue, Electron, Tailwind CSS" />
+  </a>
+</p>
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## 我现在在做什么
 
-## Learn More
+- AI 应用和 Agent 工作流
+- Web 前端与工程化
+- 移动端、Electron 和跨平台交付
+- 从需求分析到界面实现，再到多端上线
 
-To learn more about Next.js, take a look at the following resources:
+## 最近写的
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+平时主要用中文写开发实践、工具观察，还有一些对 AI 产品和工程问题的判断。
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- [看完 Claude Code 源码，这几条少烧 token 的方法你一定要知道](https://huzhihui.com/blog/claude-code-token-saving-must-know)
+- [一周 AI 产品速览：从模型升级到落地场景的新观察](https://huzhihui.com/blog/weekly-ai-product-roundup-model-upgrades-and-use-cases)
+- [从 Apifox CDN 投毒事件，看 AI 全栈时代的开发工具供应链风险](https://huzhihui.com/blog/apifox-cdn-supply-chain-risk)
 
-## Deploy on Vercel
+## 可以在这些地方找到我
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+<p>
+  <a href="https://huzhihui.com">
+    <img src="https://img.shields.io/badge/Website-huzhihui.com-009BD5?style=for-the-badge&logo=homepage&logoColor=white" alt="Website" />
+  </a>
+  <a href="https://huzhihui.com/blog">
+    <img src="https://img.shields.io/badge/Blog-Tech%20Writing-FFA500?style=for-the-badge&logo=rss&logoColor=white" alt="Blog" />
+  </a>
+  <a href="https://github.com/zhihui-hu">
+    <img src="https://img.shields.io/badge/GitHub-zhihui--hu-181717?style=for-the-badge&logo=github&logoColor=white" alt="GitHub" />
+  </a>
+  <a href="https://juejin.cn/user/1811608667955805">
+    <img src="https://img.shields.io/badge/Juejin-Articles-007FFF?style=for-the-badge&logo=juejin&logoColor=white" alt="Juejin" />
+  </a>
+  <a href="https://www.zhihu.com/people/zhihui-hu">
+    <img src="https://img.shields.io/badge/Zhihu-Answers-0084FF?style=for-the-badge&logo=zhihu&logoColor=white" alt="Zhihu" />
+  </a>
+  <a href="https://blog.csdn.net/h774140913">
+    <img src="https://img.shields.io/badge/CSDN-Blog-FC5531?style=for-the-badge&logo=csdn&logoColor=white" alt="CSDN" />
+  </a>
+  <a href="https://gitee.com/zhihui-hu">
+    <img src="https://img.shields.io/badge/Gitee-Mirror-C71D23?style=for-the-badge&logo=gitee&logoColor=white" alt="Gitee" />
+  </a>
+  <a href="mailto:i@huzhihui.com">
+    <img src="https://img.shields.io/badge/Email-i%40huzhihui.com-0A66C2?style=for-the-badge" alt="Email" />
+  </a>
+</p>
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## 关于这个仓库
+
+这是我的 GitHub Profile README，也是个人网站 [huzhihui.com](https://huzhihui.com) 的源码仓库。
+
+License: [CC BY-NC 4.0](https://creativecommons.org/licenses/by-nc/4.0/)

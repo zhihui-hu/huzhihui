@@ -36,6 +36,13 @@ function parseLanguage(className?: string) {
   return match?.[1]?.toLowerCase() ?? '';
 }
 
+function isStaticAssetLink(href: string) {
+  return (
+    href.startsWith('/assets/') ||
+    /\.(json|txt|csv|pdf|zip|ya?ml|xml|log)$/i.test(href)
+  );
+}
+
 function extractCodeBlock(children: React.ReactNode) {
   const [child] = React.Children.toArray(children);
 
@@ -87,6 +94,10 @@ function CustomLink({
   className,
   ...props
 }: React.ComponentProps<'a'> & { href?: string }) {
+  if (isStaticAssetLink(href)) {
+    return <a className={className} href={href} {...props} />;
+  }
+
   if (href.startsWith('/')) {
     return <Link className={className} href={href} {...props} />;
   }
@@ -153,7 +164,7 @@ function Pre({ children, className }: React.ComponentProps<'pre'>) {
 
 function Table({ className, ...props }: React.ComponentProps<'table'>) {
   return (
-    <div className="my-6 w-full overflow-x-auto rounded-xl border border-border">
+    <div className="my-6 w-full overflow-x-auto">
       <table
         className={cn('w-full min-w-full border-collapse', className)}
         {...props}

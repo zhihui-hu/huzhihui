@@ -55,12 +55,12 @@ export async function CodeBlock({ code, language, className }: CodeBlockProps) {
   return (
     <div
       className={cn(
-        'github-code-block my-6 overflow-hidden rounded-xl border border-border bg-card',
+        'github-code-block my-6 overflow-hidden rounded-md border border-border/70 bg-background',
         className,
       )}
     >
-      <div className="flex items-center justify-between border-b border-border bg-muted/40 px-3 py-2">
-        <span className="font-mono text-[11px] font-medium">
+      <div className="flex items-center justify-between border-b border-border/60 bg-muted/20 px-3 py-1.5">
+        <span className="font-mono text-[10px] font-medium tracking-wide text-muted-foreground/80">
           {formatLanguageLabel(normalizedLanguage)}
         </span>
         {allowCopy ? <CodeCopyButton value={code} /> : null}

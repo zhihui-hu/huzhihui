@@ -7,8 +7,8 @@ export default function BlogLayout({
   children: React.ReactNode;
 }) {
   return (
-    <main className="mx-4 mt-8 max-w-xl text-foreground lg:mx-auto">
-      <div className="mt-6 flex min-w-0 flex-col px-2 md:px-0">
+    <main className="mx-auto mt-8 w-full max-w-4xl px-4 text-foreground sm:px-6">
+      <div className="mt-6 flex min-w-0 flex-col">
         <BlogNavbar />
         {children}
         <BlogFooter />
