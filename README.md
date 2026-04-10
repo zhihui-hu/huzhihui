@@ -21,14 +21,6 @@
 - 移动端、Electron 和跨平台交付
 - 从需求分析到界面实现，再到多端上线
 
-## 最近写的
-
-平时主要用中文写开发实践、工具观察，还有一些对 AI 产品和工程问题的判断。
-
-- [看完 Claude Code 源码，这几条少烧 token 的方法你一定要知道](https://huzhihui.com/blog/claude-code-token-saving-must-know)
-- [一周 AI 产品速览：从模型升级到落地场景的新观察](https://huzhihui.com/blog/weekly-ai-product-roundup-model-upgrades-and-use-cases)
-- [从 Apifox CDN 投毒事件，看 AI 全栈时代的开发工具供应链风险](https://huzhihui.com/blog/apifox-cdn-supply-chain-risk)
-
 ## 可以在这些地方找到我
 
 <p>
