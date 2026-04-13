@@ -1,3 +1,4 @@
+import { BlogLink } from '@/components/blog/blog-link';
 import {
   Empty,
   EmptyDescription,
@@ -5,12 +6,15 @@ import {
   EmptyMedia,
   EmptyTitle,
 } from '@/components/ui/empty';
-import { type BlogPost, formatBlogDate } from '@/lib/blog';
+import { type BlogPost } from '@/lib/blog';
 import { BookOpenTextIcon } from 'lucide-react';
-import Link from 'next/link';
+
+export type BlogPostListItem = BlogPost & {
+  formattedPublishedAt: string;
+};
 
 type BlogPostsProps = {
-  posts: BlogPost[];
+  posts: BlogPostListItem[];
   limit?: number;
 };
 
@@ -37,20 +41,20 @@ export function BlogPosts({ posts, limit }: BlogPostsProps) {
   return (
     <div>
       {visiblePosts.map((post) => (
-        <Link
+        <BlogLink
           key={post.slug}
           className="mb-4 flex flex-col gap-1"
           href={`/blog/${post.slug}`}
         >
           <div className="flex w-full flex-col gap-1 md:flex-row md:gap-2">
             <p className="w-[100px] shrink-0 whitespace-nowrap tabular-nums text-muted-foreground">
-              {formatBlogDate(post.metadata.publishedAt)}
+              {post.formattedPublishedAt}
             </p>
             <p className="min-w-0 tracking-tight text-foreground line-clamp-1">
               <span className="underline-hover"> {post.metadata.title}</span>
             </p>
           </div>
-        </Link>
+        </BlogLink>
       ))}
     </div>
   );

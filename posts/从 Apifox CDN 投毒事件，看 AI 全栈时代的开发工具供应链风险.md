@@ -3,6 +3,22 @@ title: 从 Apifox CDN 投毒事件，看 AI 全栈时代的开发工具供应链
 slug: apifox-cdn-supply-chain-risk
 publishedAt: 2026-04-03
 summary: 从 Apifox 官方 CDN 入口文件被投毒这次事件出发，梳理 AI 全栈时代开发者终端为何会成为供应链攻击的高价值目标，以及这类风险该如何理解和应对。
+keywords:
+  - Apifox
+  - CDN 投毒
+  - 供应链攻击
+  - Electron 安全
+  - AI 全栈
+  - 开发者终端
+  - 远程代码执行
+  - 凭证泄露
+tags:
+  - Apifox
+  - 供应链安全
+  - Electron
+  - AI 全栈
+  - 开发工具
+  - 安全风险
 ---
 
 这两年技术圈有个很顺耳的词，叫 AI 全栈。

@@ -1,14 +1,9 @@
-import Link from 'next/link';
+import { BlogLink } from '@/components/blog/blog-link';
 
-const navItems = [
+const navItems: Array<{ href: string; name: string; external?: boolean }> = [
   {
     href: '/blog',
-    name: 'blog',
-  },
-  {
-    href: 'https://github.com/zhihui-hu/',
-    name: 'github',
-    external: true,
+    name: 'Blog',
   },
 ];
 
@@ -22,7 +17,7 @@ export function BlogNavbar() {
         >
           <div className="flex flex-row pr-10">
             {navItems.map((item) => (
-              <Link
+              <BlogLink
                 key={item.href}
                 className="m-1 flex items-center px-2 py-1 transition-all hover:text-foreground"
                 href={item.href}
@@ -30,7 +25,7 @@ export function BlogNavbar() {
                 target={item.external ? '_blank' : undefined}
               >
                 {item.name}
-              </Link>
+              </BlogLink>
             ))}
           </div>
         </nav>

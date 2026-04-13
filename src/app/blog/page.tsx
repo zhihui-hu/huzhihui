@@ -1,5 +1,5 @@
 import { BlogPosts } from '@/components/blog/posts';
-import { getBlogPosts } from '@/lib/blog';
+import { formatBlogRelativeDate, getBlogPosts } from '@/lib/blog';
 import type { Metadata } from 'next';
 
 import pkg from '../../../package.json';
@@ -30,11 +30,13 @@ export const metadata: Metadata = {
 };
 
 export default function BlogPage() {
-  const posts = getBlogPosts();
+  const posts = getBlogPosts().map((post) => ({
+    ...post,
+    formattedPublishedAt: formatBlogRelativeDate(post.metadata.publishedAt),
+  }));
 
   return (
     <section>
-      <h1 className="mb-8 text-2xl font-semibold tracking-tighter">Blog</h1>
       <BlogPosts posts={posts} />
     </section>
   );

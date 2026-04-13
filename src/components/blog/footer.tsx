@@ -1,3 +1,5 @@
+import { BlogLink } from '@/components/blog/blog-link';
+
 function ArrowIcon() {
   return (
     <svg
@@ -32,27 +34,23 @@ const footerLinks = [
 
 export function BlogFooter() {
   return (
-    <footer className="mb-16">
-      <ul className="mt-8 flex flex-col gap-2 text-sm text-muted-foreground md:flex-row md:gap-4">
-        {footerLinks.map((item) => (
-          <li key={item.href}>
-            <a
-              className="flex items-center transition-all hover:text-foreground"
-              href={item.href}
-              rel={
-                item.href.startsWith('http') ? 'noopener noreferrer' : undefined
-              }
-              target={item.href.startsWith('http') ? '_blank' : undefined}
-            >
-              <ArrowIcon />
-              <span className="ml-2">{item.label}</span>
-            </a>
-          </li>
-        ))}
-      </ul>
+    <footer className="mb-16 flex w-full justify-between">
       <p className="mt-8 text-muted-foreground">
         © 2016 - {new Date().getFullYear()} 胡志辉
       </p>
+      <ul className="mt-8 flex flex-col gap-2 text-sm text-muted-foreground md:flex-row md:gap-4">
+        {footerLinks.map((item) => (
+          <li key={item.href}>
+            <BlogLink
+              className="flex items-center transition-all hover:text-foreground"
+              href={item.href}
+            >
+              <ArrowIcon />
+              <span className="ml-2">{item.label}</span>
+            </BlogLink>
+          </li>
+        ))}
+      </ul>
     </footer>
   );
 }

@@ -1,6 +1,11 @@
 import { MarkdownBody } from '@/components/blog/markdown-body';
 import { CustomMDX } from '@/components/blog/mdx';
-import { formatBlogDate, getBlogPostBySlug, getBlogPosts } from '@/lib/blog';
+import { PostHeader } from '@/components/blog/post-header';
+import { ShareBar } from '@/components/blog/share-bar';
+import { TableOfContents } from '@/components/blog/table-of-contents';
+import { parseToc } from '@/components/blog/toc';
+import { getBlogPostBySlug, getBlogPosts } from '@/lib/blog';
+import { cn } from '@/lib/utils';
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 
@@ -81,6 +86,8 @@ export default async function BlogPostPage(props: PageProps<'/blog/[slug]'>) {
 
   const articleUrl = `${pkg.seo.og.url}/blog/${post.slug}`;
   const articleImage = resolveImageUrl(post.metadata.image);
+  const tocItems = parseToc(post.content);
+  const hasToc = tocItems.length > 0;
   const jsonLd = {
     '@context': 'https://schema.org',
     '@type': 'BlogPosting',
@@ -109,17 +116,33 @@ export default async function BlogPostPage(props: PageProps<'/blog/[slug]'>) {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         type="application/ld+json"
       />
-      <header className="mb-8 border-b border-border/60 pb-6">
-        <h1 className="title text-[clamp(2rem,5vw,2.9rem)] font-bold leading-tight tracking-[-0.04em] text-foreground">
-          {post.metadata.title}
-        </h1>
-        <div className="mt-3 flex items-center text-sm text-muted-foreground">
-          <p>{formatBlogDate(post.metadata.publishedAt)}</p>
+      <div
+        className={cn(
+          hasToc &&
+            'flex flex-col gap-8 xl:grid xl:grid-cols-[minmax(0,1fr)_18rem] xl:gap-12',
+        )}
+      >
+        {hasToc && (
+          <aside className="order-1 hidden xl:order-2 xl:block">
+            <div className="xl:sticky xl:top-[var(--blog-sticky-offset)] xl:max-h-[var(--blog-sticky-max-height)] xl:overflow-y-auto xl:pb-8">
+              <TableOfContents content={post.content} initialItems={tocItems} />
+            </div>
+          </aside>
+        )}
+
+        <div
+          className={cn(
+            'min-w-0 w-full max-w-[980px]',
+            hasToc && 'order-2 xl:order-1',
+          )}
+        >
+          <PostHeader post={post} />
+          <MarkdownBody>
+            <CustomMDX source={post.content} />
+          </MarkdownBody>
+          <ShareBar title={post.metadata.title} url={articleUrl} />
         </div>
-      </header>
-      <MarkdownBody>
-        <CustomMDX source={post.content} />
-      </MarkdownBody>
+      </div>
     </section>
   );
 }

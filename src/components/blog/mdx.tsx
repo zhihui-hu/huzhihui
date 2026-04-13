@@ -1,9 +1,9 @@
+import { BlogLink } from '@/components/blog/blog-link';
 import { CodeCopyButton } from '@/components/blog/code-copy-button';
 import { isSensitiveCodeSample } from '@/components/blog/code-safety';
 import { MermaidDiagram } from '@/components/blog/mermaid';
 import { cn } from '@/lib/utils';
 import { MDXRemote, type MDXRemoteProps } from 'next-mdx-remote/rsc';
-import Link from 'next/link';
 import React from 'react';
 import rehypeAutolinkHeadings from 'rehype-autolink-headings';
 import rehypePrettyCode, {
@@ -93,50 +93,12 @@ function extractCodeContent(children: React.ReactNode) {
   return flattenText(children).replace(/\n$/, '');
 }
 
-function isStaticAssetLink(href: string) {
-  return (
-    href.startsWith('/assets/') ||
-    /\.(json|txt|csv|pdf|zip|ya?ml|xml|log)$/i.test(href)
-  );
-}
-
-function isExternalLink(href: string) {
-  return (
-    href.startsWith('http://') ||
-    href.startsWith('https://') ||
-    href.startsWith('//') ||
-    href.startsWith('mailto:') ||
-    href.startsWith('tel:')
-  );
-}
-
 function CustomLink({
   href = '',
   className,
   ...props
 }: React.ComponentProps<'a'> & { href?: string }) {
-  const openInNewTab = isExternalLink(href);
-  const linkProps = openInNewTab
-    ? { rel: 'noopener noreferrer', target: '_blank' as const }
-    : {};
-
-  if (href.startsWith('#')) {
-    return <a className={className} href={href} {...props} />;
-  }
-
-  if (isStaticAssetLink(href)) {
-    return <a className={className} href={href} {...linkProps} {...props} />;
-  }
-
-  if (href.startsWith('/')) {
-    return (
-      <Link className={className} href={href} {...props}>
-        {props.children}
-      </Link>
-    );
-  }
-
-  return <a className={className} href={href} {...linkProps} {...props} />;
+  return <BlogLink className={className} href={href} {...props} />;
 }
 
 function Code({

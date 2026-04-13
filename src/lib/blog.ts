@@ -1,4 +1,5 @@
-import { format } from 'date-fns';
+import { format, formatDistanceToNow } from 'date-fns';
+import { zhCN } from 'date-fns/locale';
 import fs from 'node:fs';
 import path from 'node:path';
 import { cache } from 'react';
@@ -113,6 +114,19 @@ function stripMarkdown(content: string) {
     .trim();
 }
 
+function getWordMetrics(content: string) {
+  const plain = stripMarkdown(content);
+  const chineseChars = (plain.match(/[\u4e00-\u9fa5]/g) || []).length;
+  const englishWords = (
+    plain.replace(/[\u4e00-\u9fa5]/g, ' ').match(/\b\w+\b/g) || []
+  ).length;
+
+  return {
+    chineseChars,
+    englishWords,
+  };
+}
+
 function createSummary(content: string) {
   const plainText = stripMarkdown(content);
 
@@ -193,14 +207,47 @@ export const getBlogPostBySlug = cache((slug: string) => {
   return getBlogPosts().find((post) => post.slug === slug);
 });
 
-export function formatBlogDate(date: string) {
+export function formatBlogAbsoluteDate(date: string) {
   const parsedDate = parsePublishedAt(date);
 
   if (!parsedDate) {
     return '未标注日期';
   }
 
-  return format(parsedDate, 'yyyy-MM-dd');
+  return format(
+    parsedDate,
+    date.includes('T') ? 'yyyy-MM-dd HH:mm' : 'yyyy-MM-dd',
+  );
+}
+
+export function formatBlogDate(date: string) {
+  return formatBlogAbsoluteDate(date);
+}
+
+export function formatBlogRelativeDate(date: string) {
+  const parsedDate = parsePublishedAt(date);
+
+  if (!parsedDate) {
+    return '未标注日期';
+  }
+
+  return formatDistanceToNow(parsedDate, {
+    addSuffix: true,
+    locale: zhCN,
+  });
+}
+
+export function getBlogWordCount(content: string) {
+  const { chineseChars, englishWords } = getWordMetrics(content);
+
+  return chineseChars + englishWords;
+}
+
+export function estimateBlogReadingTime(content: string) {
+  const { chineseChars, englishWords } = getWordMetrics(content);
+  const minutes = chineseChars / 500 + englishWords / 200;
+
+  return Math.max(1, Math.round(minutes));
 }
 
 export function getBlogLastModified(date: string) {
