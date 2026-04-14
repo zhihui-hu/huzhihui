@@ -1,4 +1,12 @@
-import { format, formatDistanceToNow } from 'date-fns';
+import {
+  compareAsc,
+  compareDesc,
+  format,
+  formatDistanceToNow,
+  isFuture,
+  isValid,
+  parseISO,
+} from 'date-fns';
 import { zhCN } from 'date-fns/locale';
 import fs from 'node:fs';
 import path from 'node:path';
@@ -148,11 +156,51 @@ function parsePublishedAt(value: string) {
     return null;
   }
 
-  const date = value.includes('T')
-    ? new Date(value)
-    : new Date(`${value}T00:00:00`);
+  const date = parseISO(value);
 
-  return Number.isNaN(date.getTime()) ? null : date;
+  return isValid(date) ? date : null;
+}
+
+function compareBlogPostsByPublishedAtDesc(left: BlogPost, right: BlogPost) {
+  const leftDate = parsePublishedAt(left.metadata.publishedAt);
+  const rightDate = parsePublishedAt(right.metadata.publishedAt);
+
+  if (!leftDate && !rightDate) {
+    return left.metadata.title.localeCompare(right.metadata.title, 'zh-CN');
+  }
+
+  if (!leftDate) {
+    return 1;
+  }
+
+  if (!rightDate) {
+    return -1;
+  }
+
+  const leftIsFuture = isFuture(leftDate);
+  const rightIsFuture = isFuture(rightDate);
+
+  if (leftIsFuture !== rightIsFuture) {
+    return leftIsFuture ? 1 : -1;
+  }
+
+  if (leftIsFuture && rightIsFuture) {
+    const futureDiff = compareAsc(leftDate, rightDate);
+
+    if (futureDiff !== 0) {
+      return futureDiff;
+    }
+
+    return left.metadata.title.localeCompare(right.metadata.title, 'zh-CN');
+  }
+
+  const dateDiff = compareDesc(leftDate, rightDate);
+
+  if (dateDiff !== 0) {
+    return dateDiff;
+  }
+
+  return left.metadata.title.localeCompare(right.metadata.title, 'zh-CN');
 }
 
 function normalizePost(fileName: string) {
@@ -183,24 +231,7 @@ function normalizePost(fileName: string) {
 export const getBlogPosts = cache(() => {
   return getMarkdownFiles()
     .map((fileName) => normalizePost(fileName))
-    .sort((left, right) => {
-      const leftDate = parsePublishedAt(left.metadata.publishedAt);
-      const rightDate = parsePublishedAt(right.metadata.publishedAt);
-
-      if (!leftDate && !rightDate) {
-        return left.metadata.title.localeCompare(right.metadata.title, 'zh-CN');
-      }
-
-      if (!leftDate) {
-        return 1;
-      }
-
-      if (!rightDate) {
-        return -1;
-      }
-
-      return rightDate.getTime() - leftDate.getTime();
-    });
+    .sort(compareBlogPostsByPublishedAtDesc);
 });
 
 export const getBlogPostBySlug = cache((slug: string) => {

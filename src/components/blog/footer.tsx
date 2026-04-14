@@ -1,56 +1,64 @@
 import { BlogLink } from '@/components/blog/blog-link';
+import { Button } from '@/components/ui/button';
+import {
+  GitBranchIcon,
+  type LucideIcon,
+  MailIcon,
+  RssIcon,
+} from 'lucide-react';
 
-function ArrowIcon() {
-  return (
-    <svg
-      fill="none"
-      height="12"
-      viewBox="0 0 12 12"
-      width="12"
-      xmlns="http://www.w3.org/2000/svg"
-    >
-      <path
-        d="M2.07102 11.3494L0.963068 10.2415L9.2017 1.98864H2.83807L2.85227 0.454545H11.8438V9.46023H10.2955L10.3097 3.09659L2.07102 11.3494Z"
-        fill="currentColor"
-      />
-    </svg>
-  );
-}
-
-const footerLinks = [
+const footerLinks: Array<{
+  href: string;
+  icon: LucideIcon;
+  label: string;
+}> = [
   {
     href: '/rss.xml',
-    label: 'rss',
+    icon: RssIcon,
+    label: 'RSS',
   },
   {
     href: 'mailto:i@huzhihui.com',
-    label: 'email',
+    icon: MailIcon,
+    label: 'Email',
   },
   {
     href: 'https://github.com/zhihui-hu/',
-    label: 'github',
+    icon: GitBranchIcon,
+    label: 'GitHub',
   },
 ];
 
 export function BlogFooter() {
   return (
-    <footer className="mb-16 flex w-full justify-between">
-      <p className="mt-8 text-muted-foreground">
-        © 2016 - {new Date().getFullYear()} 胡志辉
-      </p>
-      <ul className="mt-8 flex flex-col gap-2 text-sm text-muted-foreground md:flex-row md:gap-4">
-        {footerLinks.map((item) => (
-          <li key={item.href}>
-            <BlogLink
-              className="flex items-center transition-all hover:text-foreground"
-              href={item.href}
-            >
-              <ArrowIcon />
-              <span className="ml-2">{item.label}</span>
-            </BlogLink>
-          </li>
-        ))}
-      </ul>
+    <footer className="mb-16 mt-12 w-full border-t border-border/60 pt-5 pb-[calc(env(safe-area-inset-bottom,0px)+0.25rem)]">
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+        <p className="text-xs text-muted-foreground sm:text-sm">
+          © 2016 - {new Date().getFullYear()} 胡志辉
+        </p>
+
+        <ul className="flex flex-wrap gap-2 text-sm">
+          {footerLinks.map((item) => {
+            const Icon = item.icon;
+
+            return (
+              <li key={item.href}>
+                <Button
+                  asChild
+                  className=" border-border/60 bg-background/80 text-muted-foreground shadow-none hover:bg-muted/60 hover:text-foreground"
+                  size="sm"
+                  variant="outline"
+                >
+                  <BlogLink href={item.href}>
+                    <Icon aria-hidden="true" data-icon="inline-start" />
+                    {item.label}
+                  </BlogLink>
+                </Button>
+              </li>
+            );
+          })}
+        </ul>
+      </div>
     </footer>
   );
 }

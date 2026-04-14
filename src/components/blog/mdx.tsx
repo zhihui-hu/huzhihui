@@ -3,7 +3,7 @@ import { CodeCopyButton } from '@/components/blog/code-copy-button';
 import { isSensitiveCodeSample } from '@/components/blog/code-safety';
 import { MermaidDiagram } from '@/components/blog/mermaid';
 import { cn } from '@/lib/utils';
-import { MDXRemote, type MDXRemoteProps } from 'next-mdx-remote/rsc';
+import { type MDXRemoteProps, compileMDX } from 'next-mdx-remote/rsc';
 import React from 'react';
 import rehypeAutolinkHeadings from 'rehype-autolink-headings';
 import rehypePrettyCode, {
@@ -261,41 +261,126 @@ const components = {
   ),
 };
 
-export function CustomMDX({
+export type BlogMdxIssue = {
+  title: string;
+  description: string;
+  detail?: string;
+};
+
+type BlogMdxRenderResult = {
+  content: React.ReactNode | null;
+  issue: BlogMdxIssue | null;
+};
+
+type BlogMdxSourceProps = Omit<MDXRemoteProps, 'source'> & {
+  source: string;
+};
+
+const blockedTagPattern = /<\s*(script)\b/gi;
+
+function getLineNumber(source: string, index: number) {
+  return source.slice(0, index).split('\n').length;
+}
+
+function findBlockedTagIssue(source: string): BlogMdxIssue | null {
+  const match = blockedTagPattern.exec(source);
+
+  if (!match || match.index === undefined) {
+    blockedTagPattern.lastIndex = 0;
+    return null;
+  }
+
+  const lineNumber = getLineNumber(source, match.index);
+  blockedTagPattern.lastIndex = 0;
+
+  return {
+    title: '文章内容包含不可渲染的 script 标签',
+    description:
+      '当前博客正文不允许直接渲染 <script>。如果你只是想展示脚本代码，请改成 fenced code block，例如 ```html 或 ```js。',
+    detail: `在第 ${lineNumber} 行检测到 <script> 标签，已阻止本次渲染。`,
+  };
+}
+
+function getMdxErrorDetail(error: unknown) {
+  if (error instanceof Error && error.message) {
+    return error.message;
+  }
+
+  return '未知的 MDX 编译错误';
+}
+
+function createMdxOptions(options?: MDXRemoteProps['options']) {
+  return {
+    ...options,
+    mdxOptions: {
+      ...(options?.mdxOptions || {}),
+      remarkPlugins: [...(options?.mdxOptions?.remarkPlugins || []), remarkGfm],
+      rehypePlugins: [
+        ...(options?.mdxOptions?.rehypePlugins || []),
+        rehypeSlug,
+        [
+          rehypeAutolinkHeadings,
+          {
+            behavior: 'prepend',
+            properties: {
+              ariaLabel: 'Link to section',
+              className: ['anchor'],
+            },
+            content: headingLinkIcon,
+          },
+        ],
+        [rehypePrettyCode, prettyCodeOptions],
+      ],
+    },
+  } satisfies MDXRemoteProps['options'];
+}
+
+export async function renderBlogMdx(
+  props: BlogMdxSourceProps,
+): Promise<BlogMdxRenderResult> {
+  const issue = findBlockedTagIssue(props.source);
+
+  if (issue) {
+    return {
+      content: null,
+      issue,
+    };
+  }
+
+  try {
+    const { content } = await compileMDX({
+      ...props,
+      components: { ...components, ...(props.components || {}) },
+      options: createMdxOptions(props.options),
+    });
+
+    return {
+      content,
+      issue: null,
+    };
+  } catch (error) {
+    return {
+      content: null,
+      issue: {
+        title: '文章解析失败',
+        description:
+          '当前文章没有通过 MDX 编译。请检查未闭合标签、JSX 语法，或者没有正确包起来的代码块。',
+        detail: getMdxErrorDetail(error),
+      },
+    };
+  }
+}
+
+export async function CustomMDX({
   components: customComponents,
   options,
   ...props
-}: MDXRemoteProps) {
-  return (
-    <MDXRemote
-      {...props}
-      components={{ ...components, ...(customComponents || {}) }}
-      options={{
-        ...options,
-        mdxOptions: {
-          ...(options?.mdxOptions || {}),
-          remarkPlugins: [
-            ...(options?.mdxOptions?.remarkPlugins || []),
-            remarkGfm,
-          ],
-          rehypePlugins: [
-            ...(options?.mdxOptions?.rehypePlugins || []),
-            rehypeSlug,
-            [
-              rehypeAutolinkHeadings,
-              {
-                behavior: 'prepend',
-                properties: {
-                  ariaLabel: 'Link to section',
-                  className: ['anchor'],
-                },
-                content: headingLinkIcon,
-              },
-            ],
-            [rehypePrettyCode, prettyCodeOptions],
-          ],
-        },
-      }}
-    />
-  );
+}: BlogMdxSourceProps) {
+  const { content } = await renderBlogMdx({
+    ...props,
+    components: customComponents,
+    options,
+  });
+
+  return content;
 }

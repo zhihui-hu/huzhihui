@@ -1,7 +1,7 @@
 ---
 title: 看完claude code源码 这几条少烧token的方法你一定要知道
 slug: claude-code-token-saving-must-know
-publishedAt: 2026-04-04
+publishedAt: 2026-04-04T20:49
 summary: 看完 Claude Code 源码之后，我更想聊的不是彩蛋，而是普通程序员和用户到底怎么更省钱地用它。这篇直接按方法展开，最后拿数据算账。
 keywords:
   - Claude Code

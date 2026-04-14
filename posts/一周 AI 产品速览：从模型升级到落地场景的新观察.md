@@ -1,7 +1,7 @@
 ---
 title: 一周 AI 产品速览：从模型升级到落地场景的新观察
 slug: weekly-ai-product-roundup-model-upgrades-and-use-cases
-publishedAt: 2026-04-08
+publishedAt: 2026-04-08T18:28
 summary: 从模型升级、AI 应用演进到工作流落地与团队协作，梳理一周 AI 产品动态里真正值得关注的变化，并给出可复用的观察框架。
 keywords:
   - AI 产品

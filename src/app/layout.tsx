@@ -1,4 +1,5 @@
 import { Providers } from '@/components/providers';
+import { StructuredData } from '@/components/structured-data';
 import type { Metadata } from 'next';
 import { Geist } from 'next/font/google';
 import Script from 'next/script';
@@ -84,26 +85,19 @@ export default function RootLayout({
           media="(prefers-color-scheme: dark)"
         />
         {pkg.seo.jsonLd && (
-          <Script
-            id="huzhihui-jsonld"
-            type="application/ld+json"
-            dangerouslySetInnerHTML={{ __html: JSON.stringify(pkg.seo.jsonLd) }}
-            strategy="beforeInteractive"
-          />
+          <StructuredData data={pkg.seo.jsonLd} id="huzhihui-jsonld" />
         )}
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `
-              (function() {
-                var isIE = /MSIE|Trident/.test(navigator.userAgent);
-                var isOldIE = /MSIE [1-9]\\.|MSIE 10\\./.test(navigator.userAgent);
-                if (isOldIE) {
-                  window.location.href = '/ie.html';
-                }
-              })();
-            `,
-          }}
-        />
+        <Script id="legacy-ie-redirect" strategy="beforeInteractive">
+          {`
+            (function() {
+              var isIE = /MSIE|Trident/.test(navigator.userAgent);
+              var isOldIE = /MSIE [1-9]\\.|MSIE 10\\./.test(navigator.userAgent);
+              if (isOldIE) {
+                window.location.href = '/ie.html';
+              }
+            })();
+          `}
+        </Script>
       </head>
       <body className={font.className} suppressHydrationWarning>
         <Providers>{children}</Providers>

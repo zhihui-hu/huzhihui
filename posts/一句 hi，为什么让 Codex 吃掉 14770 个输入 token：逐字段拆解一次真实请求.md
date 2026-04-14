@@ -1,7 +1,7 @@
 ---
 title: 一句 hi，为什么让 Codex 吃掉 14770 个输入 token：逐字段拆解一次真实请求
 slug: codex-hi-14770-input-tokens
-publishedAt: 2026-04-10
+publishedAt: 2026-04-10T18:28
 summary: 基于真实的 request.json 和 response.txt，拆开 Codex 在收到一句 hi 后到底背了多少前缀、工具和仓库上下文，也解释为什么一轮问候看着很轻，实际并不便宜。
 keywords:
   - Codex

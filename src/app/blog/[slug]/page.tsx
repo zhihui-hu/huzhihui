@@ -1,9 +1,11 @@
 import { MarkdownBody } from '@/components/blog/markdown-body';
-import { CustomMDX } from '@/components/blog/mdx';
+import { renderBlogMdx } from '@/components/blog/mdx';
 import { PostHeader } from '@/components/blog/post-header';
+import { BlogRenderIssue } from '@/components/blog/render-issue';
 import { ShareBar } from '@/components/blog/share-bar';
 import { TableOfContents } from '@/components/blog/table-of-contents';
 import { parseToc } from '@/components/blog/toc';
+import { StructuredData } from '@/components/structured-data';
 import { getBlogPostBySlug, getBlogPosts } from '@/lib/blog';
 import { cn } from '@/lib/utils';
 import type { Metadata } from 'next';
@@ -88,6 +90,9 @@ export default async function BlogPostPage(props: PageProps<'/blog/[slug]'>) {
   const articleImage = resolveImageUrl(post.metadata.image);
   const tocItems = parseToc(post.content);
   const hasToc = tocItems.length > 0;
+  const renderedPost = await renderBlogMdx({
+    source: post.content,
+  });
   const jsonLd = {
     '@context': 'https://schema.org',
     '@type': 'BlogPosting',
@@ -112,10 +117,7 @@ export default async function BlogPostPage(props: PageProps<'/blog/[slug]'>) {
 
   return (
     <section className="mx-auto w-full">
-      <script
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-        type="application/ld+json"
-      />
+      <StructuredData data={jsonLd} id={`blog-post-jsonld-${post.slug}`} />
       <div
         className={cn(
           hasToc &&
@@ -124,7 +126,7 @@ export default async function BlogPostPage(props: PageProps<'/blog/[slug]'>) {
       >
         {hasToc && (
           <aside className="order-1 hidden xl:order-2 xl:block">
-            <div className="xl:sticky xl:top-[var(--blog-sticky-offset)] xl:max-h-[var(--blog-sticky-max-height)] xl:overflow-y-auto xl:pb-8">
+            <div className="xl:sticky xl:top-(--blog-sticky-offset) xl:max-h-(--blog-sticky-max-height) xl:overflow-y-auto xl:pb-8">
               <TableOfContents content={post.content} initialItems={tocItems} />
             </div>
           </aside>
@@ -132,13 +134,17 @@ export default async function BlogPostPage(props: PageProps<'/blog/[slug]'>) {
 
         <div
           className={cn(
-            'min-w-0 w-full max-w-[980px]',
+            'min-w-0 w-full container',
             hasToc && 'order-2 xl:order-1',
           )}
         >
           <PostHeader post={post} />
           <MarkdownBody>
-            <CustomMDX source={post.content} />
+            {renderedPost.issue ? (
+              <BlogRenderIssue issue={renderedPost.issue} />
+            ) : (
+              renderedPost.content
+            )}
           </MarkdownBody>
           <ShareBar title={post.metadata.title} url={articleUrl} />
         </div>
