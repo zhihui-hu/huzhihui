@@ -4,6 +4,7 @@ import {
   GitBranchIcon,
   type LucideIcon,
   MailIcon,
+  MapIcon,
   RssIcon,
 } from 'lucide-react';
 
@@ -16,6 +17,11 @@ const footerLinks: Array<{
     href: '/rss.xml',
     icon: RssIcon,
     label: 'RSS',
+  },
+  {
+    href: '/sitemap.xml',
+    icon: MapIcon,
+    label: 'Sitemap',
   },
   {
     href: 'mailto:i@huzhihui.com',
