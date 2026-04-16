@@ -2,23 +2,14 @@ import { existsSync } from 'node:fs';
 import { join } from 'node:path';
 import { cache } from 'react';
 
-import productsSourceData from './projects-source.json';
-
-type ProductSourceAttribute = {
-  label: string;
-  module?: string;
-  kind?: string;
-  url?: string;
-  type?: string;
-  text?: string;
-};
-
-type ProductSourceResource = {
-  label: string;
-  url?: string;
-  kind?: string;
-  text?: string;
-};
+import { PROJECT_SOURCES } from './projects-source';
+import type {
+  ProjectSource,
+  ProjectSourceAttribute,
+  ProjectSourceDevelopment,
+  ProjectSourcePeriod,
+  ProjectSourceResource,
+} from './projects-source';
 
 type ProjectScreenshot = {
   image: string;
@@ -71,38 +62,6 @@ export type ProjectDetail = {
   development: ProjectDevelopment[];
 };
 
-type ProductSource = {
-  slug: string;
-  name: string;
-  route?: string;
-  url?: string;
-  logo?: string;
-  overview?: string;
-  description?: string;
-  tags: string[];
-  detail: {
-    logo?: string;
-    headline?: string;
-    categories?: string[];
-    attributes?: ProductSourceAttribute[];
-    introduction: string[];
-    development: Array<{
-      name: string;
-      period?: ProjectPeriod;
-      summary: string[];
-      techStack?: string[];
-      resources?: ProductSourceResource[];
-      screenshots?: ProjectScreenshot[];
-      assets?: ProjectAsset[];
-    }>;
-  };
-};
-
-type ProductSourceFile = {
-  products: ProductSource[];
-};
-
-const PRODUCTS_SOURCE: ProductSourceFile = productsSourceData;
 const PUBLIC_ROOT = join(process.cwd(), 'public');
 
 export type Project = {
@@ -113,6 +72,7 @@ export type Project = {
   logo?: string;
   description: string;
   tags: string[];
+  listTags: string[];
   url?: string;
   repo?: string;
   publishedAt?: string;
@@ -137,69 +97,85 @@ function normalizeTagKey(tag: string) {
   return tag.trim().toLowerCase();
 }
 
-function mergeProjectTags(product: ProductSource) {
-  const tags: string[] = [];
-  const seen = new Set<string>();
-  const append = (tag?: string) => {
-    if (!tag) {
-      return;
-    }
-
-    const value = tag.trim();
-
-    if (!value) {
-      return;
-    }
-
-    const key = normalizeTagKey(value);
-
-    if (seen.has(key)) {
-      return;
-    }
-
-    seen.add(key);
-    tags.push(value);
-  };
-
-  for (const tag of product.tags || []) {
-    append(tag);
+function appendProjectTag(result: string[], seen: Set<string>, tag?: string) {
+  if (!tag) {
+    return;
   }
 
-  for (const development of product.detail.development || []) {
-    for (const tech of development.techStack || []) {
-      if (tags.length >= 8) {
+  const value = tag.trim();
+
+  if (!value) {
+    return;
+  }
+
+  const key = normalizeTagKey(value);
+
+  if (seen.has(key)) {
+    return;
+  }
+
+  seen.add(key);
+  result.push(value);
+}
+
+function collectProjectTags(
+  tagGroups: Array<readonly string[] | undefined>,
+  limit?: number,
+) {
+  const tags: string[] = [];
+  const seen = new Set<string>();
+
+  for (const group of tagGroups) {
+    for (const tag of group || []) {
+      appendProjectTag(tags, seen, tag);
+
+      if (limit && tags.length >= limit) {
         return tags;
       }
-
-      append(tech);
     }
   }
 
   return tags;
 }
 
-function getProjectOverview(product: ProductSource) {
-  return product.overview || product.description || '';
+function getProjectListTags(projectSource: ProjectSource) {
+  return collectProjectTags([projectSource.tags]);
 }
 
-function getPrimaryProjectUrl(product: ProductSource) {
-  if (product.url) {
-    return product.url;
+function getProjectTags(projectSource: ProjectSource) {
+  return collectProjectTags(
+    [
+      projectSource.tags,
+      ...(projectSource.detail.development || []).map(
+        (development) => development.techStack,
+      ),
+    ],
+    8,
+  );
+}
+
+function getProjectOverview(projectSource: ProjectSource) {
+  return projectSource.overview || projectSource.description || '';
+}
+
+function getPrimaryProjectUrl(projectSource: ProjectSource) {
+  if (projectSource.url) {
+    return projectSource.url;
   }
 
-  return product.detail.attributes?.find(
+  return projectSource.detail.attributes?.find(
     (attribute) => attribute.kind === 'website',
   )?.url;
 }
 
-function getRepositoryUrl(product: ProductSource) {
-  return product.detail.attributes?.find(
+function getRepositoryUrl(projectSource: ProjectSource) {
+  return projectSource.detail.attributes?.find(
     (attribute) => attribute.kind === 'repository',
   )?.url;
 }
 
-function readProductsSource(): ProductSource[] {
-  return PRODUCTS_SOURCE.products || [];
+function readProjectSources(): ProjectSource[] {
+  return PROJECT_SOURCES;
 }
 
 function getFileName(filePath: string) {
@@ -263,7 +239,7 @@ function isNonEmptyString(value: string | undefined): value is string {
 }
 
 function normalizeAttribute(
-  attribute: ProductSourceAttribute,
+  attribute: ProjectSourceAttribute,
 ): ProjectAttribute {
   return {
     label: attribute.label,
@@ -275,7 +251,7 @@ function normalizeAttribute(
   };
 }
 
-function normalizeResource(resource: ProductSourceResource): ProjectResource {
+function normalizeResource(resource: ProjectSourceResource): ProjectResource {
   return {
     label: resource.label,
     url: resource.url,
@@ -285,7 +261,7 @@ function normalizeResource(resource: ProductSourceResource): ProjectResource {
 }
 
 function normalizeDevelopment(
-  development: ProductSource['detail']['development'][number],
+  development: ProjectSourceDevelopment,
 ): ProjectDevelopment {
   return {
     name: development.name,
@@ -319,10 +295,10 @@ function normalizeDevelopment(
   };
 }
 
-function getProjectTimeline(product: ProductSource) {
-  const periods = (product.detail.development || [])
+function getProjectTimeline(projectSource: ProjectSource) {
+  const periods = (projectSource.detail.development || [])
     .map((item) => item.period)
-    .filter((period): period is ProjectPeriod => Boolean(period?.start));
+    .filter((period): period is ProjectSourcePeriod => Boolean(period?.start));
 
   if (periods.length === 0) {
     return {
@@ -348,36 +324,42 @@ function getProjectTimeline(product: ProductSource) {
   };
 }
 
-function toProject(product: ProductSource): Project {
-  const timeline = getProjectTimeline(product);
+function toProject(projectSource: ProjectSource): Project {
+  const timeline = getProjectTimeline(projectSource);
 
   return {
-    slug: product.slug,
-    name: product.name,
-    route: `/projects/${product.slug}`,
-    sourceRoute: product.route,
-    logo: normalizeLogoPath(product.logo || product.detail.logo),
-    description: getProjectOverview(product),
-    tags: mergeProjectTags(product),
-    url: getPrimaryProjectUrl(product),
-    repo: getRepositoryUrl(product),
+    slug: projectSource.slug,
+    name: projectSource.name,
+    route: `/projects/${projectSource.slug}`,
+    sourceRoute: projectSource.route,
+    logo: normalizeLogoPath(projectSource.logo || projectSource.detail.logo),
+    description: getProjectOverview(projectSource),
+    tags: getProjectTags(projectSource),
+    listTags: getProjectListTags(projectSource),
+    url: getPrimaryProjectUrl(projectSource),
+    repo: getRepositoryUrl(projectSource),
     publishedAt: timeline.publishedAt,
     timeLabel: timeline.timeLabel,
     detail: {
-      logo: normalizeLogoPath(product.detail.logo || product.logo),
-      headline: product.detail.headline || getProjectOverview(product),
-      categories: product.detail.categories || [],
-      attributes: (product.detail.attributes || []).map(normalizeAttribute),
-      introduction: product.detail.introduction || [
-        getProjectOverview(product),
+      logo: normalizeLogoPath(projectSource.detail.logo || projectSource.logo),
+      headline:
+        projectSource.detail.headline || getProjectOverview(projectSource),
+      categories: projectSource.detail.categories || [],
+      attributes: (projectSource.detail.attributes || []).map(
+        normalizeAttribute,
+      ),
+      introduction: projectSource.detail.introduction || [
+        getProjectOverview(projectSource),
       ],
-      development: (product.detail.development || []).map(normalizeDevelopment),
+      development: (projectSource.detail.development || []).map(
+        normalizeDevelopment,
+      ),
     },
   };
 }
 
 export const getProjects = cache((): Project[] => {
-  return readProductsSource()
+  return readProjectSources()
     .map(toProject)
     .sort(compareProjectByStartedAtDesc);
 });

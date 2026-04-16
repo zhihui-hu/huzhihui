@@ -1,6 +1,3 @@
-import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent } from '@/components/ui/card';
 import type {
   Project,
   ProjectAttribute,
@@ -209,47 +206,6 @@ export function buildHighlights(project: Project): HighlightItem[] {
   return items.slice(0, 6);
 }
 
-export function ResourceButton({
-  resource,
-  variant = 'outline',
-}: {
-  resource: ProjectResource;
-  variant?: 'default' | 'outline';
-}) {
-  if (!resource.url) {
-    return (
-      <Badge variant="secondary">{`${resource.label}: ${resource.text || '-'}`}</Badge>
-    );
-  }
-
-  const Icon =
-    resource.kind === 'repository'
-      ? GitForkIcon
-      : resource.kind === 'app-store'
-        ? MonitorSmartphoneIcon
-        : ExternalLinkIcon;
-
-  if (isExternalUrl(resource.url)) {
-    return (
-      <Button asChild size="sm" variant={variant}>
-        <a href={resource.url} rel="noreferrer" target="_blank">
-          <Icon data-icon="inline-start" />
-          {resource.label}
-        </a>
-      </Button>
-    );
-  }
-
-  return (
-    <Button asChild size="sm" variant={variant}>
-      <Link href={resource.url}>
-        <Icon data-icon="inline-start" />
-        {resource.label}
-      </Link>
-    </Button>
-  );
-}
-
 export function AttributeValue({ attribute }: { attribute: ProjectAttribute }) {
   const content = getAttributeSummary(attribute);
 
@@ -283,22 +239,22 @@ export function AttributeValue({ attribute }: { attribute: ProjectAttribute }) {
 export function HighlightCard({ item }: { item: HighlightItem }) {
   const Icon = item.icon;
   const content = (
-    <div className="flex flex-col gap-4">
+    <div className="flex flex-col gap-3 py-1">
       <div className="flex items-start justify-between gap-4">
-        <div className="flex min-w-0 flex-1 flex-col gap-1">
-          <p className="text-[0.7rem] font-medium tracking-[0.18em] text-muted-foreground uppercase">
+        <div className="flex min-w-0 flex-1 flex-col gap-0.5">
+          <p className="text-[11px] font-medium tracking-wider text-muted-foreground/80 uppercase">
             {item.label}
           </p>
-          <p className="line-clamp-2 text-base leading-6 font-medium text-foreground">
+          <p className="line-clamp-2 text-[15px] leading-[1.4] font-medium text-foreground">
             {item.value}
           </p>
         </div>
-        <div className="flex size-10 shrink-0 items-center justify-center rounded-2xl bg-muted text-muted-foreground">
-          <Icon className="size-4" />
+        <div className="flex size-9 shrink-0 items-center justify-center text-muted-foreground opacity-60">
+          <Icon className="size-5" strokeWidth={1.5} />
         </div>
       </div>
       {item.description && (
-        <p className="line-clamp-2 text-xs leading-5 text-muted-foreground">
+        <p className="line-clamp-2 text-[13px] leading-5 text-muted-foreground/90">
           {item.description}
         </p>
       )}
@@ -306,30 +262,28 @@ export function HighlightCard({ item }: { item: HighlightItem }) {
   );
 
   return (
-    <Card className="gap-0 rounded-[1.5rem] border border-border/60 bg-card/80">
-      <CardContent className="py-4">
-        {item.href ? (
-          isExternalUrl(item.href) ? (
-            <a
-              className="block transition-opacity hover:opacity-80"
-              href={item.href}
-              rel="noreferrer"
-              target="_blank"
-            >
-              {content}
-            </a>
-          ) : (
-            <Link
-              className="block transition-opacity hover:opacity-80"
-              href={item.href}
-            >
-              {content}
-            </Link>
-          )
+    <div className="rounded-[1rem] bg-muted/40 p-4 border border-border/40">
+      {item.href ? (
+        isExternalUrl(item.href) ? (
+          <a
+            className="block transition-opacity hover:opacity-80"
+            href={item.href}
+            rel="noreferrer"
+            target="_blank"
+          >
+            {content}
+          </a>
         ) : (
-          content
-        )}
-      </CardContent>
-    </Card>
+          <Link
+            className="block transition-opacity hover:opacity-80"
+            href={item.href}
+          >
+            {content}
+          </Link>
+        )
+      ) : (
+        content
+      )}
+    </div>
   );
 }

@@ -117,7 +117,7 @@ export default async function BlogPostPage(props: PageProps<'/blog/[slug]'>) {
 
   return (
     <BlogPageTransition>
-      <section className="mx-auto w-full">
+      <section className="container mx-auto w-full px-4 sm:px-6 lg:px-8">
         <StructuredData data={jsonLd} id={`blog-post-jsonld-${post.slug}`} />
         <div
           className={cn(
@@ -136,12 +136,7 @@ export default async function BlogPostPage(props: PageProps<'/blog/[slug]'>) {
             </aside>
           )}
 
-          <div
-            className={cn(
-              'min-w-0 w-full container',
-              hasToc && 'order-2 xl:order-1',
-            )}
-          >
+          <div className={cn('min-w-0 w-full', hasToc && 'order-2 xl:order-1')}>
             <PostHeader post={post} />
             <MarkdownBody>
               {renderedPost.issue ? (

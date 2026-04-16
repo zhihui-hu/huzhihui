@@ -19,17 +19,17 @@ export default function Page() {
   return (
     <>
       {/* ── Hero ──────────────────────────────────────────── */}
-      <section className="flex min-h-[50vh] items-center">
-        <div className="flex w-full  flex-col gap-8 py-16">
-          <h1 className="text-5xl leading-none font-semibold tracking-tight sm:text-6xl md:text-7xl">
+      <section className="container mx-auto flex min-h-[50vh] items-center px-4 py-12 sm:px-6 sm:py-16 lg:px-8">
+        <div className="flex w-full flex-col gap-6 sm:gap-8">
+          <h1 className="text-4xl leading-none font-semibold tracking-tight sm:text-6xl md:text-7xl">
             胡志辉
           </h1>
           <div className="flex flex-col gap-4">
             <p className="max-w-3xl text-base leading-8 text-muted-foreground md:text-lg">
-              自 2016 年 12
-              月开始从事软件开发，先后参与金融和医疗行业系统建设与产品交付。金融方向的工作覆盖业务流程、数据准确性、权限控制和系统稳定性；医疗方向的工作覆盖多角色协作、信息完整性和过程留痕。当前聚焦
+              自 2016 年
+              12月开始至今从事软件开发，先后参与金融和医疗行业系统建设与产品交付。金融方向的工作覆盖业务流程、数据准确性、权限控制和系统稳定性；医疗方向的工作覆盖多角色协作、信息完整性和过程留痕。当前聚焦
               AI 应用、Web
-              开发、移动端与跨平台交付，工作内容涵盖需求分析、界面实现和多端落地。
+              开发、移动端与跨平台交付，工作内容涵盖需求分析、界面实现和多端落地。感受过国企的氛围，也经历过创业公司的节奏，积累了丰富的项目经验和技术能力。热衷于探索新技术，持续提升开发效率和代码质量，致力于构建高效、可靠的软件系统。
             </p>
             <div className="flex items-center gap-3">
               <Button asChild size="icon" variant="outline">
@@ -60,7 +60,7 @@ export default function Page() {
       </section>
 
       {/* ── Latest Posts ──────────────────────────────────── */}
-      <section className="w-full  py-12">
+      <section className="container mx-auto w-full px-4 py-10 sm:px-6 sm:py-12 lg:px-8">
         <div className="flex flex-col gap-6">
           <SectionHeader href="/blog" title="最新文章" />
           <BlogPosts limit={5} posts={posts} />
@@ -68,7 +68,7 @@ export default function Page() {
       </section>
 
       {/* ── Latest Projects ──────────────────────────────── */}
-      <section className="w-full  pb-20 pt-4">
+      <section className="container mx-auto w-full px-4 pb-16 pt-4 sm:px-6 sm:pb-20 lg:px-8">
         <div className="flex flex-col gap-6">
           <SectionHeader href="/projects" title="最新作品" />
           <ProjectGrid projects={projects} />

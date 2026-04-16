@@ -37,8 +37,8 @@ const footerLinks: Array<{
 
 export function BlogFooter() {
   return (
-    <footer className="mb-16 mt-12 w-full border-t border-border/60 pt-5 pb-[calc(env(safe-area-inset-bottom,0px)+0.25rem)]">
-      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+    <footer className="mt-12 w-full border-t border-border/60">
+      <div className="container mx-auto flex flex-col gap-3 px-4 py-5 pb-[calc(env(safe-area-inset-bottom,0px)+0.75rem)] sm:flex-row sm:items-center sm:justify-between sm:px-6 lg:px-8">
         <p className="text-xs text-muted-foreground sm:text-sm">
           CC BY-NC 4.0 | 2016 - {new Date().getFullYear()} © 胡志辉
         </p>

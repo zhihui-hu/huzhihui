@@ -9,7 +9,7 @@ export default function MainLayout({
 }) {
   return (
     <>
-      <div className="mx-auto flex min-h-screen w-full max-w-[1280px] flex-col px-4 text-foreground sm:px-6">
+      <div className="flex min-h-screen w-full flex-col text-foreground">
         <BlogNavbar />
         <main className="flex-1">{children}</main>
         <BlogFooter />

@@ -40,7 +40,7 @@ export default function BlogPage() {
       {/* <h1 className="text-3xl font-semibold tracking-tight text-foreground mb-2">
         博客
       </h1> */}
-      <section>
+      <section className="container mx-auto px-4 py-2 sm:px-6 lg:px-8">
         <BlogPosts posts={posts} />
       </section>
     </BlogPageTransition>

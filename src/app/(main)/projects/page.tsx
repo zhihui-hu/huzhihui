@@ -30,7 +30,7 @@ export default function ProjectsPage() {
   const projects = getProjects();
 
   return (
-    <section className="container">
+    <section className="container mx-auto px-4 sm:px-6 lg:px-8">
       <ProjectGrid projects={projects} />
     </section>
   );

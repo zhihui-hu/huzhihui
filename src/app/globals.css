@@ -126,6 +126,19 @@
     @apply border-border outline-ring/50;
   }
 
+  a[href],
+  button:not(:disabled),
+  [role='button']:not([aria-disabled='true']):not([data-disabled='true']),
+  summary {
+    cursor: pointer;
+  }
+
+  button:disabled,
+  [role='button'][aria-disabled='true'],
+  [role='button'][data-disabled='true'] {
+    cursor: not-allowed;
+  }
+
   body {
     @apply bg-background text-foreground;
   }
