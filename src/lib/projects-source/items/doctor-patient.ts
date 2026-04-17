@@ -10,6 +10,40 @@ export const doctorPatientProjectSource: ProjectSource = {
     '叮铃医生（患者端）是一个面向微信场景的患者服务 Web App，围绕电话咨询与线上问诊提供更轻量的触达入口。',
   tags: ['医疗', '患者端', '微信 H5', 'Vue 2', '在线咨询'],
   detail: {
+    hero: {
+      companyName: '北京新里程叮铃科技有限公司',
+      companyUrl: 'https://www.njhgroup.cn/',
+      metaLine: '2020-01 ～ 2021-03 · 支持微信 H5 访问',
+      actions: [
+        {
+          kind: 'website',
+          label: '在线',
+          url: 'https://h5.51dling.com/h5',
+        },
+      ],
+    },
+    metrics: [
+      {
+        label: '项目周期',
+        value: '2020-01 ～ 2021-03',
+        sub: '交付跨度',
+      },
+      {
+        label: '分类',
+        value: '医疗',
+        sub: '患者端 H5',
+      },
+      {
+        label: '平台',
+        value: '微信 / H5',
+        sub: '微信 Web App',
+      },
+      {
+        label: '提供者',
+        value: '北京新里程叮铃科技有限公司',
+        href: 'https://www.njhgroup.cn/',
+      },
+    ],
     headline:
       '患者端以微信 H5 形态承载电话咨询与线上问诊服务，主要服务关心父母健康的一二线城市白领人群。',
     categories: ['医疗', '患者端 H5', '微信 Web App'],
@@ -23,10 +57,15 @@ export const doctorPatientProjectSource: ProjectSource = {
       {
         label: '提供者',
         text: '北京新里程叮铃科技有限公司',
+        url: 'https://www.njhgroup.cn/',
       },
       {
         label: '适用平台',
         text: '微信 / H5',
+      },
+      {
+        label: '价格',
+        text: '免费',
       },
     ],
     introduction: [

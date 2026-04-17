@@ -3,16 +3,77 @@ import type { ProjectSource } from '../types';
 export const bigvProjectSource: ProjectSource = {
   slug: 'bigv',
   name: '笨嘴神器',
+  url: 'http://www.shuyouyinli.com/',
   route: '/products/bigv',
   logo: '/assets/projects/bigv-logo.png',
   overview:
     '笨嘴神器是一个面向投资场景的微信小程序，数有引力官网将其定位为“跨时代的 融合人工智能(AI)的 投资利器”，围绕机会发现、资金观察、宏观研判和 AI 问答提供辅助能力。',
   tags: ['AI 投资', '微信小程序', 'Vue 3', 'TypeScript'],
   detail: {
+    hero: {
+      companyName: '成都数有引力科技有限公司',
+      companyUrl: 'http://www.shuyouyinli.com/',
+      metaLine: '2021-10 ～ 至今 · 专为微信小程序设计',
+      compact: true,
+      actions: [
+        {
+          kind: 'website',
+          label: '官网',
+          url: 'http://www.shuyouyinli.com/',
+        },
+        {
+          kind: 'qr',
+          label: '小程序二维码',
+          imageSrc:
+            'https://c18e-1257416358.cos.accelerate.myqcloud.com/IMG_4492.JPG',
+        },
+      ],
+    },
+    metrics: [
+      {
+        label: '项目周期',
+        value: '2021-10 ～ 至今',
+        sub: '交付跨度',
+      },
+      {
+        label: '分类',
+        value: '金融科技',
+        sub: 'AI 投资工具',
+      },
+      {
+        label: '平台',
+        value: '微信小程序 / WebView',
+        sub: '轻量入口',
+      },
+      {
+        label: '提供者',
+        value: '成都数有引力科技有限公司',
+        href: 'http://www.shuyouyinli.com/',
+      },
+    ],
     headline:
       '官网重点展示机会大师、巨鲸一眼清、宏观一眼清和笨嘴Chat 四个模块，把策略发现、资金异动观察、宏观判断与 AI 投资辅助整合进一个小程序入口。',
     categories: ['金融科技', 'AI 投资工具', '微信小程序', 'WebView 工具'],
     attributes: [
+      {
+        label: '官网地址',
+        module: '数有引力官网',
+        kind: 'website',
+        url: 'http://www.shuyouyinli.com/',
+      },
+      {
+        label: '提供者',
+        text: '成都数有引力科技有限公司',
+        url: 'http://www.shuyouyinli.com/',
+      },
+      {
+        label: '适用平台',
+        text: '微信小程序 / WebView',
+      },
+      {
+        label: '价格',
+        text: '免费',
+      },
       {
         label: '官网定位',
         text: '跨时代的 融合人工智能(AI)的 投资利器',

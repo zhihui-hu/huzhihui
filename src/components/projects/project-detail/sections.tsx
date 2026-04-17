@@ -72,24 +72,6 @@ export function DevelopmentCard({ item }: { item: ProjectDevelopment }) {
         )}
       </div>
 
-      {item.screenshots && item.screenshots.length > 0 && (
-        <div className="flex flex-col gap-3 mt-4">
-          <p className="text-[14px] font-medium text-foreground">界面预览</p>
-          <div className="-mx-4 overflow-x-auto px-4 pb-1 hide-scrollbar">
-            <div className="flex gap-4">
-              {item.screenshots.map((screenshot, index) => (
-                <ProjectImagePreview
-                  alt={`${item.name} 界面预览 ${index + 1}`}
-                  buttonClassName="w-[180px] shrink-0 rounded-[1rem] border border-border/40 sm:w-[220px]"
-                  key={`${item.name}-${screenshot.image}`}
-                  src={screenshot.image}
-                />
-              ))}
-            </div>
-          </div>
-        </div>
-      )}
-
       {item.assets && item.assets.length > 0 && (
         <div className="flex flex-col gap-3 mt-4">
           <p className="text-[14px] font-medium text-foreground">补充图片</p>

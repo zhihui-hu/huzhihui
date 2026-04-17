@@ -10,10 +10,57 @@ export const fofProWebProjectSource: ProjectSource = {
     'FOF PRO Web 端是一套面向 FOF、MOM 与委外投资场景的投研投顾平台，覆盖投前、投中和投后流程。',
   tags: ['基金投研', 'Web 平台', 'React', 'TypeScript', '投顾平台'],
   detail: {
+    hero: {
+      companyName: '况客科技（北京）有限公司',
+      companyUrl: 'https://qutke.com/',
+      metaLine: '2021-06 ～ 至今 · 专为 Web 平台设计',
+      actions: [
+        {
+          kind: 'website',
+          label: '在线',
+          url: 'https://pro.fofinvesting.com/',
+        },
+      ],
+    },
+    metrics: [
+      {
+        label: '项目周期',
+        value: '2021-06 ～ 至今',
+        sub: '交付跨度',
+      },
+      {
+        label: '分类',
+        value: '金融科技',
+        sub: '投研投顾',
+      },
+      {
+        label: '平台',
+        value: 'Web 平台',
+        sub: '机构级工作台',
+      },
+      {
+        label: '提供者',
+        value: '况客科技（北京）有限公司',
+        href: 'https://qutke.com/',
+      },
+    ],
     headline:
       '作为核心 Web 平台，FOF PRO 围绕基金分析、持仓研究、流程协同与投研模板构建完整的机构级投顾工作台。',
     categories: ['金融科技', '投研投顾', 'Web 平台'],
     attributes: [
+      {
+        label: '提供者',
+        text: '况客科技（北京）有限公司',
+        url: 'https://qutke.com/',
+      },
+      {
+        label: '适用平台',
+        text: 'Web 平台',
+      },
+      {
+        label: '价格',
+        text: '商业化服务',
+      },
       {
         label: '线上地址',
         module: 'FOF PRO',

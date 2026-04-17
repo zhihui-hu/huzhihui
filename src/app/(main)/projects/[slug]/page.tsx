@@ -105,7 +105,7 @@ export default async function ProjectDetailPage(
   return (
     <>
       <StructuredData data={jsonLd} id={`project-jsonld-${project.slug}`} />
-      <ProjectDetail canonicalUrl={canonicalUrl} project={project} />
+      <ProjectDetail project={project} />
     </>
   );
 }

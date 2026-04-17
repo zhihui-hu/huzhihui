@@ -30,6 +30,28 @@ export type ProjectSourcePeriod = {
   text: string;
 };
 
+export type ProjectSourceHeroAction = {
+  kind: 'website' | 'ios' | 'android' | 'qr';
+  label: string;
+  url?: string;
+  imageSrc?: string;
+};
+
+export type ProjectSourceMetric = {
+  label: string;
+  value: string;
+  sub?: string;
+  href?: string;
+};
+
+export type ProjectSourceHero = {
+  companyName: string;
+  companyUrl?: string;
+  metaLine: string;
+  actions: ProjectSourceHeroAction[];
+  compact?: boolean;
+};
+
 export type ProjectSourceDevelopment = {
   name: string;
   period?: ProjectSourcePeriod;
@@ -45,6 +67,8 @@ export type ProjectSourceDetail = {
   headline?: string;
   categories?: string[];
   attributes?: ProjectSourceAttribute[];
+  hero: ProjectSourceHero;
+  metrics: ProjectSourceMetric[];
   introduction: string[];
   development: ProjectSourceDevelopment[];
 };
@@ -54,6 +78,7 @@ export type ProjectSource = {
   name: string;
   route?: string;
   url?: string;
+  repo?: string;
   logo?: string;
   overview?: string;
   description?: string;

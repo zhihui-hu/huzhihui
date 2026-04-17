@@ -10,6 +10,41 @@ export const doctorDoctorProjectSource: ProjectSource = {
     '叮铃医生（医生端）是一款面向医生端的医疗应用，覆盖问诊咨询、处方查询、日程安排、健康宣教、个人排班、医生名片与患者线上开药等核心场景。',
   tags: ['医疗', '在线问诊', 'iPhone', 'UniApp', '医生端'],
   detail: {
+    hero: {
+      companyName: '北京新里程叮铃科技有限公司',
+      companyUrl: 'https://www.njhgroup.cn/',
+      metaLine: '2020-01 ～ 至今 · 适配 iPhone',
+      compact: true,
+      actions: [
+        {
+          kind: 'ios',
+          label: 'iOS 下载',
+          url: 'https://apps.apple.com/cn/app/%E5%8F%AE%E9%93%83%E5%8C%BB%E7%94%9F-%E5%8C%BB%E7%94%9F%E7%89%88/id1475864364',
+        },
+      ],
+    },
+    metrics: [
+      {
+        label: '项目周期',
+        value: '2020-01 ～ 至今',
+        sub: '交付跨度',
+      },
+      {
+        label: '分类',
+        value: '医疗',
+        sub: '医生端 App',
+      },
+      {
+        label: '平台',
+        value: 'iPhone',
+        sub: 'iOS 12.0 或更高版本',
+      },
+      {
+        label: '提供者',
+        value: '北京新里程叮铃科技有限公司',
+        href: 'https://www.njhgroup.cn/',
+      },
+    ],
     headline:
       '医生端医疗 App 聚焦线上问诊、处方查询、日程管理与患者开药等场景，强调缩短医患沟通链路，让线上咨询更顺畅。',
     categories: ['医疗', '医生端 App', 'iPhone 应用'],
@@ -38,6 +73,7 @@ export const doctorDoctorProjectSource: ProjectSource = {
       {
         label: '提供者',
         text: '北京新里程叮铃科技有限公司',
+        url: 'https://www.njhgroup.cn/',
       },
       {
         label: '适用设备',

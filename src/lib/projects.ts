@@ -20,6 +20,28 @@ type ProjectAsset = {
   image: string;
 };
 
+export type ProjectHeroAction = {
+  kind: 'website' | 'ios' | 'android' | 'qr';
+  label: string;
+  url?: string;
+  imageSrc?: string;
+};
+
+export type ProjectHero = {
+  companyName: string;
+  companyUrl?: string;
+  metaLine: string;
+  actions: ProjectHeroAction[];
+  compact?: boolean;
+};
+
+export type ProjectMetric = {
+  label: string;
+  value: string;
+  sub?: string;
+  href?: string;
+};
+
 export type ProjectAttribute = {
   label: string;
   module?: string;
@@ -58,6 +80,9 @@ export type ProjectDetail = {
   headline?: string;
   categories?: string[];
   attributes?: ProjectAttribute[];
+  hero: ProjectHero;
+  metrics: ProjectMetric[];
+  screenshots: ProjectScreenshot[];
   introduction: string[];
   development: ProjectDevelopment[];
 };
@@ -156,22 +181,6 @@ function getProjectTags(projectSource: ProjectSource) {
 
 function getProjectOverview(projectSource: ProjectSource) {
   return projectSource.overview || projectSource.description || '';
-}
-
-function getPrimaryProjectUrl(projectSource: ProjectSource) {
-  if (projectSource.url) {
-    return projectSource.url;
-  }
-
-  return projectSource.detail.attributes?.find(
-    (attribute) => attribute.kind === 'website',
-  )?.url;
-}
-
-function getRepositoryUrl(projectSource: ProjectSource) {
-  return projectSource.detail.attributes?.find(
-    (attribute) => attribute.kind === 'repository',
-  )?.url;
 }
 
 function readProjectSources(): ProjectSource[] {
@@ -295,6 +304,23 @@ function normalizeDevelopment(
   };
 }
 
+function collectDetailScreenshots(
+  development: ProjectDevelopment[],
+): ProjectScreenshot[] {
+  const seen = new Set<string>();
+
+  return development.flatMap((item) =>
+    (item.screenshots || []).filter((screenshot) => {
+      if (seen.has(screenshot.image)) {
+        return false;
+      }
+
+      seen.add(screenshot.image);
+      return true;
+    }),
+  );
+}
+
 function getProjectTimeline(projectSource: ProjectSource) {
   const periods = (projectSource.detail.development || [])
     .map((item) => item.period)
@@ -326,6 +352,9 @@ function getProjectTimeline(projectSource: ProjectSource) {
 
 function toProject(projectSource: ProjectSource): Project {
   const timeline = getProjectTimeline(projectSource);
+  const development = (projectSource.detail.development || []).map(
+    normalizeDevelopment,
+  );
 
   return {
     slug: projectSource.slug,
@@ -336,8 +365,8 @@ function toProject(projectSource: ProjectSource): Project {
     description: getProjectOverview(projectSource),
     tags: getProjectTags(projectSource),
     listTags: getProjectListTags(projectSource),
-    url: getPrimaryProjectUrl(projectSource),
-    repo: getRepositoryUrl(projectSource),
+    url: projectSource.url,
+    repo: projectSource.repo,
     publishedAt: timeline.publishedAt,
     timeLabel: timeline.timeLabel,
     detail: {
@@ -348,12 +377,29 @@ function toProject(projectSource: ProjectSource): Project {
       attributes: (projectSource.detail.attributes || []).map(
         normalizeAttribute,
       ),
+      hero: {
+        companyName: projectSource.detail.hero.companyName,
+        companyUrl: projectSource.detail.hero.companyUrl,
+        metaLine: projectSource.detail.hero.metaLine,
+        actions: projectSource.detail.hero.actions.map((action) => ({
+          kind: action.kind,
+          label: action.label,
+          url: action.url,
+          imageSrc: action.imageSrc,
+        })),
+        compact: projectSource.detail.hero.compact,
+      },
+      metrics: projectSource.detail.metrics.map((metric) => ({
+        label: metric.label,
+        value: metric.value,
+        sub: metric.sub,
+        href: metric.href,
+      })),
+      screenshots: collectDetailScreenshots(development),
       introduction: projectSource.detail.introduction || [
         getProjectOverview(projectSource),
       ],
-      development: (projectSource.detail.development || []).map(
-        normalizeDevelopment,
-      ),
+      development,
     },
   };
 }
